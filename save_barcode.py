@@ -1,9 +1,10 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
+import sys
 
 #####################################################################
 ean  = 4002846034504        # EAN Nummer einsetzen
-size = "small"              # "small" oder "big" --> Breite des Codes
+size = "small"              # "small" oder "big" --> Width of the Code
 #####################################################################
 
 
@@ -56,11 +57,6 @@ def set_size(size, barcode_plain):
         font_size = 34
 
 def save(standard, width, height, off, barcode_plain, save_path):
-    size = ''
-    if width == 4:
-        size = 'LARGE'
-    else:
-        size = ''
 
     try:
         os.remove(save_path)
@@ -123,4 +119,18 @@ def main(plain, size, path):
     # Generieren und Speichern
     save(ln, line_width, line_height, margin, plain, path)
 
-main(str(ean), size, str(ean) + '.png')
+if __name__ == '__main__': 
+
+    # looking for commandline arguments
+    arguments = sys.argv[1:]
+    for arg in arguments:
+        if str(arg).isdigit():
+            if len(arg) == 8 or len(arg) == 13:
+                ean = arg
+            else:
+                print("invalid length of EAN")
+                main(str(ean), size, 'invalid_length_of_EAN.jpg')
+        elif arg == "--small" or arg == "--big":
+            size = arg.strip("-")
+
+    main(str(ean), size, str(ean) + '.jpg')
