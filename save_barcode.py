@@ -3,8 +3,8 @@ import os
 import sys
 
 #####################################################################
-ean  = 4002846034504        # EAN Nummer einsetzen
-size = "small"              # "small" oder "big" --> Width of the Code
+ean  = 4002846034504        # set EAN code
+size = "small"              # "small" or "big" --> Width of the Code
 #####################################################################
 
 
@@ -19,15 +19,15 @@ letter_code_before_middle_even = ["0100111","0110011","0011011","0100001","00111
 letter_code_after_middle = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"]
 even_odd = ["uuuuuu","uugugg","uuggug","uugggu","uguugg","ugguug","uggguu","ugugug","uguggu","uggugu"]
 
-barcode_values_13 = [0] * 95                    # Array initialisieren mit 95 Nullen
-barcode_values_8 = [0] * 67                     # Array initialisieren mit 67 Nullen
+barcode_values_13 = [0] * 95                    # initialize list with 95 zeros
+barcode_values_8 = [0] * 67                     # initialize list with 67 zeros
 
 
 # Functions
 def ean_thirteen(width, height, off, barcode_plain):
     # Fill Numbers
-    for plain in range(1, 13):      # für jede Zahl ausführen
-        for num in range(0, 7):     # jedes codierte Zeichen umschreiben
+    for plain in range(1, 13):      # for each figure in the code
+        for num in range(0, 7):
             if plain < 7:
                 order = even_odd[int(barcode_plain[0])]
                 if order[plain - 1] == "u":
@@ -39,8 +39,8 @@ def ean_thirteen(width, height, off, barcode_plain):
 
 def ean_eight(width, height, barcode_plain):
     # Fill Numbers
-    for plain in range(0, 8):      # für jede Zahl ausführen
-        for num in range(0, 7):     # jedes codierte Zeichen umschreiben
+    for plain in range(0, 8):      # for each figure in the code
+        for num in range(0, 7):
             if plain < 4:
                 barcode_values_8[plain * 7 + 3 + num] = int(letter_code_before_middle_odd[int(barcode_plain[plain])][num])
             else:
@@ -107,16 +107,16 @@ def save(standard, width, height, off, barcode_plain, save_path):
 def main(plain, size, path):
     ln = len(plain)
 
-    # Kodieren
+    # encoding the ean
     if ln == 8:
         ean_eight(line_width, line_height, plain)
     elif ln == 13:
         ean_thirteen(line_width, line_height, margin, plain)
 
-    # Größe festlegen
+    # specify the width of the image
     set_size(size, plain)
 
-    # Generieren und Speichern
+    # genereate and save file
     save(ln, line_width, line_height, margin, plain, path)
 
 if __name__ == '__main__': 
