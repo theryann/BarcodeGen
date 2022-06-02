@@ -3,7 +3,7 @@ Creating a Barcode image file with Python
 
 There are two ways to use this script:
 
-1. From with the script open:
+1. With the script open:
     Insert an EAN code in the ean variable at the top.
     change the width of the code via the size variable
 
